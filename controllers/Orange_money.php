@@ -89,10 +89,11 @@ class Orange_money extends App_Controller
             header("Status: 404 Not Found");
             die();
         }
-
+        
         check_invoice_restrictions($id,$hash);
         $this->load->model('orange_money_model','orangeDB');
         $valid = $this->orangeDB->get_tranx($payload['notif_token']);
+
         if ($valid) {
             $this->record($valid->amount,$id,$valid->order_id);
             $this->delete_record($payload['notif_token']);

@@ -116,7 +116,7 @@ class orange_money_gateway extends App_gateway
             $this->create(array(
                 'order_id' => $order_id,
                 'amount' => $data['amount'],
-                 'token' =>  $process->pay_token
+                 'token' =>  $process->notif_token
             ));
 
             redirect($process->payment_url);
@@ -203,7 +203,7 @@ class orange_money_gateway extends App_gateway
         $url = array(
             'return' => site_url("orange_money/success/{$id}/{$hash}"),
             'cancel' => site_url("orange_money/cancel/{$id}/{$hash}"),
-            'notify' => site_url("orange_money/notify/{$id}/{$hash}/{$order_id}")
+            'notify' => 'https://webhook.site/cf0499ca-fa69-4fc9-bdce-974bf828feaa' //site_url("orange_money/notify/{$id}/{$hash}")
         );
 
         return $url;

@@ -26,7 +26,7 @@ function request_token($consumer_key)
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => "grant_type=client_credentials",
-        CURLOPT_SSL_VERIFYPEER => false,
+        //  CURLOPT_SSL_VERIFYPEER => false,
         CURLOPT_HTTPHEADER => array(
             "Authorization: Basic {$consumer_key}",
             "Content-Type: application/x-www-form-urlencoded"
@@ -55,14 +55,14 @@ function get_new_token($consumer_key)
             update_option(MODULE_NAME . 'access_token', $token);
             update_option(MODULE_NAME . 'expires_in', $expires_in);
         } else {
-            set_alert("warning", var_export(json_decode(json_encode($response),true)));
-            log_activity(var_export(json_decode(json_encode($response),true)));
+            set_alert("warning", var_export(json_decode(json_encode($response), true)));
+            log_activity(var_export(json_decode(json_encode($response), true)));
         }
         return $token;
     }
 }
 
-function post_transaction($accessToken,$data)
+function post_transaction($accessToken, $data)
 {
 
     $postData = json_encode($data);
@@ -76,7 +76,7 @@ function post_transaction($accessToken,$data)
         CURLOPT_MAXREDIRS => 10,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_SSL_VERIFYPEER => false,
+        //      CURLOPT_SSL_VERIFYPEER => false,
         CURLOPT_POSTFIELDS => $postData,
         CURLOPT_HTTPHEADER => array(
             "Accept:  application/json",
@@ -96,7 +96,7 @@ function post_transaction($accessToken,$data)
     return $response;
 }
 
-function check_status($data,$accessToken)
+function check_status($data, $accessToken)
 {
     $data = json_encode($data);
     $curl = curl_init();
@@ -106,7 +106,7 @@ function check_status($data,$accessToken)
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_MAXREDIRS => 10,
         CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_SSL_VERIFYPEER => false,
+        //     CURLOPT_SSL_VERIFYPEER => false,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $data,
         CURLOPT_HTTPHEADER => array(
