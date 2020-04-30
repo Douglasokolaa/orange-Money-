@@ -106,7 +106,7 @@ function check_status($data, $accessToken)
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_MAXREDIRS => 10,
         CURLOPT_FOLLOWLOCATION => true,
-        //     CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYPEER => false,
         CURLOPT_CUSTOMREQUEST => "POST",
         CURLOPT_POSTFIELDS => $data,
         CURLOPT_HTTPHEADER => array(

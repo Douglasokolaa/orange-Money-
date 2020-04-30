@@ -143,6 +143,7 @@ class orange_money_gateway extends App_gateway
         return $this->getSetting('test_mode_enabled') == '1' ? $this->getSetting('test_consumer_key') : $this->decryptSetting('consumer_key');
     }
 
+
     /**
      * Gets merchant key for all environments
      * @param null
@@ -180,8 +181,7 @@ class orange_money_gateway extends App_gateway
      */
     public function tx_ref($data)
     {
-        $tx_ref = format_invoice_number($data['invoice']->id) . '-' . time();
-        $tx_ref = str_replace('/', '', $tx_ref);
+        $tx_ref = $data['invoice']->id . '-' . time();
         return $tx_ref;
     }
 
@@ -203,7 +203,7 @@ class orange_money_gateway extends App_gateway
         $url = array(
             'return' => site_url("orange_money/success/{$id}/{$hash}"),
             'cancel' => site_url("orange_money/cancel/{$id}/{$hash}"),
-            'notify' => 'https://webhook.site/cf0499ca-fa69-4fc9-bdce-974bf828feaa' //site_url("orange_money/notify/{$id}/{$hash}")
+            'notify' => site_url("orange_money/gateways/orange_api/notify/{$id}/{$hash}")
         );
 
         return $url;
@@ -215,4 +215,8 @@ class orange_money_gateway extends App_gateway
         return   $this->ci->orangeDb->create_pending_invoice($data);
     }
 
+    public function api_url()
+    {
+        return $this->getSetting('test_mode_enabled') == '1' ? "https://api.orange.com/orange-money-webpay/dev/" :  "https://api.orange.com/orange-money-webpay/gn/" ;
+    }
 }
