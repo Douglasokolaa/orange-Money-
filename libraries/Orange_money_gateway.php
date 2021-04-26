@@ -1,7 +1,5 @@
 <?php
 
-use function GuzzleHttp\json_decode;
-
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class orange_money_gateway extends App_gateway
@@ -76,13 +74,13 @@ class orange_money_gateway extends App_gateway
     {
         $id   = $data["invoiceid"];
         $hash = $data["hash"];
-
+// var_dump($data); die;
         check_invoice_restrictions($id, $hash);
 
         $accessToken    = $this->hash_token();
         $merchantkey    = $this->merchant_key();
         $merchantName   = $this->merchant_name();
-        $currency       = $this->currency();
+        $currency       = $data['invoice']->currency_name;
         $order_id       = $this->tx_ref($data);
 
         $url            = $this->url($id, $hash,$order_id);
@@ -123,10 +121,9 @@ class orange_money_gateway extends App_gateway
         } else {
             $code = (isset($process->status)) ? $process->status : $process->code;
             $message = "orange Money : payment Failed \n ";
-            $message += " code : " . $code;
-            $message += " \n message : " . $process->message;
-            $message += " \n description : " . $process->description;
-
+            $message .= " code : " . $code;
+            $message .= " \n message : " . $process->message;
+            $message .= " \n description : " . $process->description;
             log_activity($message);
 
             set_alert("warning", $process->description);

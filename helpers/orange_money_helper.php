@@ -7,12 +7,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 function get_valid_token($consumer_key)
 {
     $token = get_option(MODULE_NAME . 'access_token');
-    $expires_in = get_option(MODULE_NAME . 'expires_in');
-    $today_date = time();
+    // $expires_in = get_option(MODULE_NAME . 'expires_in');
+    // $today_date = time();
 
-    if ($expires_in === '' || (int) $today_date <= (int) $expires_in) {
+    // if ($expires_in === '' || (int) $today_date <= (int) $expires_in) {
         $token = get_new_token($consumer_key);
-    }
+    // }
 
     return $token;
 }
@@ -47,7 +47,7 @@ function request_token($consumer_key)
 function get_new_token($consumer_key)
 {
     $response = request_token($consumer_key);
-
+    $token = false;
     if ($response) {
         if (!isset($response->error)) {
             $token = $response->access_token;
@@ -55,8 +55,8 @@ function get_new_token($consumer_key)
             update_option(MODULE_NAME . 'access_token', $token);
             update_option(MODULE_NAME . 'expires_in', $expires_in);
         } else {
-            set_alert("warning", var_export(json_decode(json_encode($response), true)));
-            log_activity(var_export(json_decode(json_encode($response), true)));
+            set_alert("warning", json_encode($response));
+            log_activity(json_encode($response));
         }
         return $token;
     }
